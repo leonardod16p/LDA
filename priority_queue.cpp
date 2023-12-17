@@ -1,3 +1,7 @@
+/*Using queue to try to implement a priority queue
+It is still not complete
+*/
+
 #include "linearDS.h"
 #include <algorithm>
 
