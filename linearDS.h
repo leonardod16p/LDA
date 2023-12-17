@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <vector>
 
+
 size_t portable_ish_malloced_size(const void* p) {
     return malloc_usable_size((void*)p);
 }
@@ -20,11 +21,13 @@ class LinearDataStructure{
 
 class c_array: public LinearDataStructure{
     int m;
-    double* array_address;
+    double* array_address;                  //Defining a pointer to the first element of the array
 
 public:
 
     double* get_address();
+    //array is constructed allocating memory at the array_addres
+    //It has some cout lines that gives me information of the memory allocation
     c_array(int size){
         m = size;
 
@@ -43,10 +46,12 @@ public:
 
     //c_array& operator=(double value);
 
+    //Basic [] overload to implement direct acess in the array
     double operator[](int index){return array_address[index];}
 
+    //Values defined by the user input
     void define_values();
-
+    //Helps to solve some problems
     void put_values(int, int);
 };
 
@@ -63,14 +68,14 @@ public:
 
 class c_list: public LinearDataStructure{
     c_node_singly_linked_list * start;
-    friend class c_stack;
+    friend class c_stack;        //stack is implemented using singly_linked_lists
 public:
     c_list(void) {start = nullptr; }
     c_list(initializer_list<double> l);
 
     double ith_item(int index);
     void push(int p_data);
-    void scroll_through_list(void);
+    void scroll_through_list(void);        //It output the list elements
     double pop();
 };
 
@@ -85,10 +90,6 @@ class c_node_doubly_linked_list {
 
 public:
     c_node_doubly_linked_list(T p_data) { data = p_data; previous = next = nullptr;};
-    
-    
-    
-    
 };
 template<class T>
 class c_doubly_linked_list: public LinearDataStructure{
@@ -134,7 +135,7 @@ class c_doubly_linked_list: public LinearDataStructure{
             }
         }
 
-
+        //It serves me to solve lunch_line problem
         void modifying_data(int index, T data);
         c_doubly_linked_list<T> bubblesort(void);
         void going_to_ith_item(int index);
@@ -225,9 +226,6 @@ public:
     }
 
 };
-
-
-
 
 
 class c_stack: public LinearDataStructure{
@@ -322,7 +320,7 @@ void c_list::push(int p_data)
     c_node_singly_linked_list * new_node; // ponteiro para o novo NO
 
     new_node = new c_node_singly_linked_list(p_data); // cria o novo NO na memoria com o dado
-    if (start != nullptr) // se a lista nao esta vazia
+    if (start != nullptr) // if the list is not empty
         new_node->next  = start;
     start = new_node;
 }
@@ -337,11 +335,11 @@ double c_list::pop(){
 }
 
 double c_list::ith_item(int index){
-    c_node_singly_linked_list * aux = start; // aponta para o 1o NO da lista
+    c_node_singly_linked_list * aux = start; // Points to the first node on the list
     cout << "Address: " << start << endl;
     int i = 0;
     double data = 0;
-    while (i < index){ // enquanto não for o fim da lista (testa tb se lista esta vazia)
+    while (i < index){        //iterate over the list till the element associated with the index
         aux = aux->next;
         i++;
     }
@@ -351,9 +349,9 @@ double c_list::ith_item(int index){
 
 void c_list::scroll_through_list(void)
 {
-    c_node_singly_linked_list * aux = start; // aponta para o 1o NO da lista
+    c_node_singly_linked_list * aux = start; //Points to the first node on the list
     cout << "Address: " << start << endl;
-    while (aux) // enquanto não for o fim da lista (testa tb se lista esta vazia)
+    while (aux) // while is not the end of the list (It test if the list is empty as well)
     {
         cout << "aux: " << aux << endl;
         cout << aux->data << endl;
@@ -381,15 +379,15 @@ void c_doubly_linked_list<T>::scroll_through_list(t_Direcao_de_percurso direcao_
 template<class T>
 void c_doubly_linked_list<T>::push(T p_data){
     this->size++;
-    c_node_doubly_linked_list<T> * new_node; // ponteiro para o novo NO
+    c_node_doubly_linked_list<T> * new_node; //Points to the new node
 
-    new_node = new c_node_doubly_linked_list(p_data); // cria o novo NO na memoria com o dado
-    if (start != nullptr) {// se a lista nao esta vazia
+    new_node = new c_node_doubly_linked_list(p_data); // create the new node on the memory with the new data
+    if (start != nullptr) {  //if the list is not empty
         new_node->next  = start;
         start->previous = new_node;
     }
-    start = new_node; // vale tanto se a lista estiver vazia ou nao
-    if (end == nullptr) // se a lista estiver vazia
+    start = new_node; 
+    if (end == nullptr) // if the list is empty
         end = new_node;
 }
 template<class T>
@@ -399,12 +397,12 @@ void c_doubly_linked_list<T>::push_back(T p_data){
 
     new_node = new c_node_doubly_linked_list(p_data);
 
-    if (end != nullptr) {// se a lista nao esta vazia
+    if (end != nullptr) {// if the list is not empty
         new_node->previous  = end;
         end->next = new_node;
     }
     end = new_node; // vale tanto se a lista estiver vazia ou nao
-    if (start == nullptr) // se a lista estiver vazia
+    if (start == nullptr) // if the list is empty
         start = new_node;
 }
 template<class T>
@@ -419,10 +417,10 @@ T c_doubly_linked_list<T>::pop(){
 }
 template<class T>
 T c_doubly_linked_list<T>::ith_item(int index){
-    c_node_doubly_linked_list<T> * aux = start; // aponta para o 1o NO da lista
+    c_node_doubly_linked_list<T> * aux = start; //Points to the first node on the list
     int i = 0;
     T data = start->data;
-    while (i < index){ // enquanto não for o fim da lista (testa tb se lista esta vazia)
+    while (i < index){ //iterate over the list till the element associated with the index
         aux = aux->next;
         i++;
     }
@@ -433,17 +431,17 @@ T c_doubly_linked_list<T>::ith_item(int index){
 template<class T>
 T c_doubly_linked_list<T>::pop_ith_item(int index){
     this->size--;
-    c_node_doubly_linked_list<T> * aux = start; // aponta para o 1o NO da lista
+    c_node_doubly_linked_list<T> * aux = start; //Points to the first node on the list
     int i = 0;
     T data = start->data;
-    while (i < index){ // enquanto não for o fim da lista (testa tb se lista esta vazia)
+    while (i < index){ //iterate over the list till the element associated with the index
         start = start->next;
         i++;
     }
     start->previous->next = start->next;
     data =  start->data;
     delete start;
-    while (start != aux){ // enquanto não for o fim da lista (testa tb se lista esta vazia)
+    while (start != aux){ // while is not the end of the list (It test if the list is empty as well)
         start = start->previous;
     }
     
@@ -462,7 +460,7 @@ c_doubly_linked_list<T>::c_doubly_linked_list(initializer_list<T> items){
 
 template<class T>
 void c_doubly_linked_list<T>::modifying_data(int index, T data){
-    c_node_doubly_linked_list<T> * aux = start; // aponta para o 1o NO da lista
+    c_node_doubly_linked_list<T> * aux = start; //Points to the first node on the list
     cout << "Address: " << start << endl;
     int i = 0;
     while (i < index){ 
