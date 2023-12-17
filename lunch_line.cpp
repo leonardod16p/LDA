@@ -10,29 +10,32 @@
 class lunch_line{
     int id = 0;
     int pos = 0;
-    c_doubly_linked_list<c_doubly_linked_list<int>> object_queue;
+    /*Using a doubly_linked list of type doubly_linked_list of type integers
+    It represents a list of elements that holds two integers, id and pos, respectively.
+    */
+    c_doubly_linked_list<c_doubly_linked_list<int>> object_queue;        
     int current_queue_size = 0;
     int const average_service_time = 1; /* Minutes */
 
 public:
 
 
-
+    
     void show_remaining_time_at_the_end(){
         cout << "Waiting time: ";
         cout << average_service_time*current_queue_size << "min" << endl;
     }
-
     void request_to_join_the_queue(){
         c_doubly_linked_list id_and_pos({id,pos});
-
+        //The program is going to give your id
         cout << "Your id is going to be: " << id << endl;
         object_queue.push_back(id_and_pos);
         id++;
         pos++;
         current_queue_size++;
     }
-
+    //Function that return the person position based on the id
+    //It helps to make the next function to work
     int person_position(int person_id){
         int id_to_be_found = person_id;
         int id_aux = 0;
@@ -54,7 +57,7 @@ public:
         cout << "You will be attended to in: ";
         cout << waiting_time_to_be_served << "min" << endl;
     }
-
+    //If someone leaves the queue at position n, you need to update the position on the queue of the persons after him
     void refresh_position_in_queue_after_request_to_leave(int index){
         int pos = index;
         int id = 0;
